@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: api2
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fipe_db
+    username: fipe_user
+    password: fipe_pass
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+server:
+  port: 8081
