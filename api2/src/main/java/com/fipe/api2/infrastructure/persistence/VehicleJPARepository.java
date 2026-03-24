@@ -1,6 +1,5 @@
 package com.fipe.api2.infrastructure.persistence;
 
-import com.fipe.api2.domain.model.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
