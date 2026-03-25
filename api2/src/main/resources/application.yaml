@@ -3,9 +3,9 @@ spring:
     name: api2
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/fipe_db
-    username: fipe_user
-    password: fipe_pass
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/fipe_db}
+    username: ${DB_USERNAME:fipe_user}
+    password: ${DB_PASSWORD:fipe_pass}
 
   jpa:
     hibernate:
@@ -13,10 +13,10 @@ spring:
     show-sql: true
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
 
 server:
-  port: 8081
+  port: ${SERVER_PORT:8081}
