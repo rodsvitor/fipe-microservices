@@ -1,5 +1,8 @@
 package com.fipe.api1.entrypoint.controller;
 
+import com.fipe.api1.entrypoint.docs.AuthControllerDocs;
+import com.fipe.api1.entrypoint.dto.AuthRequest;
+import com.fipe.api1.entrypoint.dto.AuthResponse;
 import com.fipe.api1.infrastructure.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

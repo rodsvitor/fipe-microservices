@@ -1,4 +1,4 @@
-package com.fipe.api1.infrastructure.client;
+package com.fipe.api1.infrastructure.client.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
