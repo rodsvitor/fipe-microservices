@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoadInitialBrandsUseCase {
 
-  private final FipeClient fipeClient;
-  private final BrandProducer producer;
+  private final FipeClient fipeClient; // TODO creates port for that
+  private final BrandProducer producer; // TODO creates port for that
 
   public void execute() {
 
@@ -21,29 +21,15 @@ public class LoadInitialBrandsUseCase {
 
       var brands = fipeClient.getBrands(category);
 
-      for (int i = 0; i < 5; i++) {
-
-        FipeBrandResponse brand = brands.get(i); // TODO REMOVE THAT
-
-        producer.send(
-            new BrandMessage(
-                brand.id(),
-                brand.name(),
-                category
-            )
-        );
-
-      }
-
-//      brands.forEach(brand ->
-//          producer.send(
-//              new BrandMessage(
-//                  brand.id(),
-//                  brand.name(),
-//                  category
-//              )
-//          )
-//      );
+      brands.forEach(brand ->
+          producer.send(
+              new BrandMessage(
+                  brand.id(),
+                  brand.name(),
+                  category
+              )
+          )
+      );
 
     }
   }
