@@ -1,5 +1,6 @@
 package com.fipe.api2.infrastructure.persistence;
 
+import com.fipe.api2.domain.model.Category;
 import com.fipe.api2.domain.model.Vehicle;
 import com.fipe.api2.domain.repository.VehicleRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,15 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
   @Override
   public List<Vehicle> findByBrand(String brand) {
-    return jpaRepository.findByBrandContainingIgnoreCase(brand)
+    return jpaRepository.findByBrandIgnoreCase(brand)
+        .stream()
+        .map(vehicleMapperORM::toDomain)
+        .toList();
+  }
+
+  @Override
+  public List<Vehicle> findByBrandAndCategory(String brand, Category category) {
+    return jpaRepository.findByBrandIgnoreCaseAndCategory(brand, category)
         .stream()
         .map(vehicleMapperORM::toDomain)
         .toList();
@@ -53,5 +62,10 @@ public class VehicleRepositoryImpl implements VehicleRepository {
   @Override
   public List<String> findDistinctBrands() {
     return jpaRepository.findDistinctBrands();
+  }
+
+  @Override
+  public List<String> findDistinctBrandsByCategory(Category category) {
+    return jpaRepository.findDistinctBrandsByCategory(category);
   }
 }

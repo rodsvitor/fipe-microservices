@@ -15,6 +15,10 @@ public interface VehicleRepository {
 
   List<Vehicle> findByBrand(String brand);
 
+  List<Vehicle> findByBrandAndCategory(String brand, Category category);
+
   List<String> findDistinctBrands();
+
+  List<String> findDistinctBrandsByCategory(Category category);
 
 }
