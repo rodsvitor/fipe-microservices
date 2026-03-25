@@ -7,14 +7,15 @@ import com.fipe.api1.infrastructure.client.dto.UpdateVehicleRequest;
 import com.fipe.api1.infrastructure.client.dto.VehicleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class VehicleController {
 @RequestMapping("/v1/vehicles")
+@Validated
 public class VehicleController implements VehicleControllerDocs {
 
   private final VehicleClient vehicleClient;
