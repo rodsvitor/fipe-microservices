@@ -1,13 +1,12 @@
 package com.fipe.api1.application.usecase;
 
-import com.fipe.api1.infrastructure.client.FipeBrandResponse;
+import com.fipe.api1.domain.Category;
 import com.fipe.api1.infrastructure.client.FipeClient;
+import com.fipe.api1.infrastructure.client.dto.FipeBrandResponse;
 import com.fipe.api1.infrastructure.messaging.BrandMessage;
 import com.fipe.api1.infrastructure.messaging.BrandProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,21 +17,35 @@ public class LoadInitialBrandsUseCase {
 
   public void execute() {
 
-    List<FipeBrandResponse> brands = fipeClient.getBrands();
+    for (Category category : Category.values()) {
 
-    FipeBrandResponse brand = brands.getFirst();
+      var brands = fipeClient.getBrands(category);
 
-    producer.send(
-        new BrandMessage(
-            brand.id(),
-            brand.name()));
+      for (int i = 0; i < 5; i++) {
 
-//    brands.forEach(brand ->
-//        producer.send(
-//            new BrandMessage(
-//                brand.id(),
-//                brand.name())));
+        FipeBrandResponse brand = brands.get(i); // TODO REMOVE THAT
 
+        producer.send(
+            new BrandMessage(
+                brand.id(),
+                brand.name(),
+                category
+            )
+        );
+
+      }
+
+//      brands.forEach(brand ->
+//          producer.send(
+//              new BrandMessage(
+//                  brand.id(),
+//                  brand.name(),
+//                  category
+//              )
+//          )
+//      );
+
+    }
   }
 
 }
