@@ -4,19 +4,19 @@ services:
     build: ./api1
     container_name: api1
     ports:
-      - "8080:8080"   # exposed to outside
+      - "8080:8080"
     environment:
       # API2 communication
-      API2_BASE_URL: http://api2:8081
+      API2_BASE_URL: http://api2:8080
       API2_INTERNAL_HEADER: X-Internal-Key
       API2_INTERNAL_KEY: b7f9c2a4-91d3-4f1a-8c7e-2d9a6b5c8e11
 
       # Redis
-      REDIS_HOST: redis
+      REDIS_HOST: fipe-redis
       REDIS_PORT: 6379
 
       # RabbitMQ
-      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_HOST: fipe-rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USERNAME: guest
       RABBITMQ_PASSWORD: guest
@@ -30,21 +30,23 @@ services:
     build: ./api2
     container_name: api2
     expose:
-      - "8081"        # NOT exposed publicly
+      - "8080"        # NOT exposed publicly
     environment:
       # Database
-      DB_URL: jdbc:postgresql://postgres:5432/fipe_db
+      DB_URL: jdbc:postgresql://fipe-postgres:5432/fipe_db
       DB_USERNAME: fipe_user
       DB_PASSWORD: fipe_pass
 
       # RabbitMQ
-      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_HOST: fipe-rabbitmq
       RABBITMQ_PORT: 5672
       RABBITMQ_USERNAME: guest
       RABBITMQ_PASSWORD: guest
 
       # Internal security
       INTERNAL_API_KEY: b7f9c2a4-91d3-4f1a-8c7e-2d9a6b5c8e11
+      
+      SERVER_PORT: 8080
 
     depends_on:
       - fipe-postgres
