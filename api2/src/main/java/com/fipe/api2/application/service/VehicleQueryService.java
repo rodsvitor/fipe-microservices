@@ -1,6 +1,7 @@
 package com.fipe.api2.application.service;
 
 import com.fipe.api2.application.dto.VehicleResponse;
+import com.fipe.api2.application.exception.VehicleNotFoundException;
 import com.fipe.api2.application.mapper.VehicleMapperDTO;
 import com.fipe.api2.domain.model.Category;
 import com.fipe.api2.domain.model.Vehicle;
@@ -39,7 +40,7 @@ public class VehicleQueryService {
   public VehicleResponse findById(Long id) {
     return repository.findById(id)
         .map(vehicleMapperDTO::toResponse)
-        .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+        .orElseThrow(VehicleNotFoundException::new);
   }
 
 }
