@@ -1,6 +1,28 @@
-version: '3.8'
-
 services:
+
+  api2:
+    build: ./api2
+    container_name: api2
+    expose:
+      - "8081"        # NOT exposed publicly
+    environment:
+      # Database
+      DB_URL: jdbc:postgresql://postgres:5432/fipe_db
+      DB_USERNAME: fipe_user
+      DB_PASSWORD: fipe_pass
+
+      # RabbitMQ
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+
+      # Internal security
+      INTERNAL_API_KEY: b7f9c2a4-91d3-4f1a-8c7e-2d9a6b5c8e11
+
+    depends_on:
+      - fipe-postgres
+      - fipe-rabbitmq
 
   fipe-postgres:
     image: postgres:15
