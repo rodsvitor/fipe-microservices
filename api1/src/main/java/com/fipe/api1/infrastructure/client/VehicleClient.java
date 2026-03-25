@@ -1,69 +1,75 @@
 package com.fipe.api1.infrastructure.client;
 
-import lombok.RequiredArgsConstructor;
+import com.fipe.api1.domain.Category;
+import com.fipe.api1.infrastructure.client.dto.UpdateVehicleRequest;
+import com.fipe.api1.infrastructure.client.dto.VehicleResponse;
+import com.fipe.api1.infrastructure.client.support.RestClientExecutor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class VehicleClient {
 
   private final RestTemplate restTemplate;
+  private final RestClientExecutor restClientExecutor;
+  private final String baseUrl;
 
-  @Value("${api2.base-url}")
-  private String baseUrl;
+  public VehicleClient(
+      @Qualifier("api2RestTemplate") RestTemplate restTemplate,
+      RestClientExecutor restClientExecutor,
+      @Value("${api2.base-url}") String baseUrl) {
 
-  @Cacheable(value = "vehicle-brands", key = "'all'")
-  public List<String> getBrands() {
-
-    var headers = new HttpHeaders();
-    var entity = new HttpEntity<>(headers);
-
-    String url = baseUrl + "/internal/vehicles/brands";
-
-    List<String> brands = restTemplate.exchange(
-        url,
-        HttpMethod.GET,
-        entity,
-        new ParameterizedTypeReference<List<String>>() {}
-    ).getBody();
-
-//    System.out.println("TYPE: " + brands.getClass());
-//    System.out.println("FIRST ELEMENT TYPE: " + brands[0].getClass());
-
-    return brands;
+    this.restTemplate = restTemplate;
+    this.restClientExecutor = restClientExecutor;
+    this.baseUrl = baseUrl;
 
   }
 
-  @Cacheable(value = "vehicles-by-brand", key = "#brand.toLowerCase().trim()")
-  public List<VehicleResponse> getByBrand(String brand) {
+  @Cacheable(value = "vehicle-brands", key = "'brands:' + (#category != null ? #category.name() : 'all')")
+  public List<String> getAllBrands(Category category) {
 
-    String url = baseUrl + "/internal/vehicles?brand=" + brand;
+    String url = baseUrl
+        + "/internal/vehicles/brands"
+        + (category != null ? ("?category=" + category) : "");
 
-    var headers = new HttpHeaders();
-    var entity = new HttpEntity<>(headers);
+    return restClientExecutor.execute(() ->
 
-    List<VehicleResponse> brands = restTemplate.exchange(
-        url,
-        HttpMethod.GET,
-        entity,
-        new ParameterizedTypeReference<List<VehicleResponse>>() {
-        }
-    ).getBody();
+        restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<String>>() {}
+        ).getBody()
 
-    System.out.println("TYPE: " + brands.getClass());
+    );
 
-    return brands;
+  }
+
+  @Cacheable(value = "vehicles-by-brand", key = "#brand.toLowerCase().trim() + ':' + (#category != null ? #category.name() : 'all')")
+  public List<VehicleResponse> getByBrand(String brand, Category category) {
+
+    String url = baseUrl + "/internal/vehicles?brand=" + brand
+        + (category != null ? ("&category=" + category) : "");;
+
+    return restClientExecutor.execute(() ->
+
+        restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            null,
+            new ParameterizedTypeReference<List<VehicleResponse>>() {}
+        ).getBody()
+
+    );
 
   }
 
@@ -72,34 +78,34 @@ public class VehicleClient {
 
     String url = baseUrl + "/internal/vehicles/" + id;
 
-    var headers = new HttpHeaders();
-    var entity = new HttpEntity<>(request, headers);
+    return restClientExecutor.execute(() ->
 
-    ResponseEntity<VehicleResponse> response = restTemplate.exchange(
-        url,
-        HttpMethod.PUT,
-        entity,
-        VehicleResponse.class);
+        restTemplate.exchange(
+            url,
+            HttpMethod.PUT,
+            new HttpEntity<>(request),
+            VehicleResponse.class
+        ).getBody()
 
-    return response.getBody();
+    );
   }
-
 
   @Cacheable(value = "vehicles-by-id", key = "#id")
   public VehicleResponse getById(Long id) {
 
     String url = baseUrl + "/internal/vehicles/" + id;
 
-    var headers = new HttpHeaders();
-    var entity = new HttpEntity<>(headers);
+    return restClientExecutor.execute(() ->
 
-    ResponseEntity<VehicleResponse> response = restTemplate.exchange(
-        url,
-        HttpMethod.GET,
-        entity,
-        VehicleResponse.class);
+        restTemplate.exchange(
+            url,
+            HttpMethod.GET,
+            null,
+            VehicleResponse.class
+        ).getBody()
 
-    return response.getBody();
+    );
 
   }
+
 }
