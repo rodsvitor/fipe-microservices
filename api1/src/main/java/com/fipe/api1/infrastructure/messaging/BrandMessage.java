@@ -1,4 +1,9 @@
 package com.fipe.api1.infrastructure.messaging;
 
-public record BrandMessage(Long id, String name) {
+import com.fipe.api1.domain.Category;
+
+public record BrandMessage(
+    Long brandId,
+    String brandName,
+    Category brandCategory) {
 }
