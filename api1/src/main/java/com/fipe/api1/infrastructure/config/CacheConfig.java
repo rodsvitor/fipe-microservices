@@ -1,4 +1,4 @@
-package com.fipe.api1.config;
+package com.fipe.api1.infrastructure.config;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

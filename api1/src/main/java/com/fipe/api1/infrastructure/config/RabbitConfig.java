@@ -1,4 +1,4 @@
-package com.fipe.api2.config;
+package com.fipe.api1.infrastructure.config;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
