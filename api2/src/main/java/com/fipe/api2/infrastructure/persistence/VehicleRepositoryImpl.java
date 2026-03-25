@@ -15,6 +15,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
 
   private final VehicleJPARepository jpaRepository;
   private final VehicleMapperORM vehicleMapperORM;
+  private final VehicleBatchRepository vehicleBatchRepository;
 
   @Override
   public Vehicle save(Vehicle vehicle) {
@@ -33,7 +34,7 @@ public class VehicleRepositoryImpl implements VehicleRepository {
         .map(vehicleMapperORM::toEntity)
         .toList();
 
-    jpaRepository.saveAll(vehiclesEntity);
+    vehicleBatchRepository.batchInsertIgnoreConflict(vehiclesEntity);
 
   }
 
