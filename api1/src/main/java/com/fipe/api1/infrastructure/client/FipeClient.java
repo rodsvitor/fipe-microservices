@@ -1,42 +1,47 @@
 package com.fipe.api1.infrastructure.client;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
+import com.fipe.api1.domain.Category;
+import com.fipe.api1.infrastructure.client.dto.FipeBrandResponse;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Component
-@RequiredArgsConstructor
 public class FipeClient {
 
   private final RestTemplate restTemplate;
+  private final String baseUrl;
 
-  public List<FipeBrandResponse> getBrands() {
+  public FipeClient(
+      @Qualifier("fipeRestTemplate") RestTemplate restTemplate,
+      @Value("${fipe-api.base-url}") String baseUrl) {
+    this.restTemplate = restTemplate;
+    this.baseUrl = baseUrl;
+  }
 
-    String url = "https://parallelum.com.br/fipe/api/v1/carros/marcas/";
-    String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NzkzNmM2YS01NjU5LTQ1YzEtODFmZi02ODc4ZjdjNDhiMDMiLCJlbWFpbCI6InJvZHJpZ28ucnZzb3V6YUBnbWFpbC5jb20iLCJpYXQiOjE3NzQxNDU1MDB9.oxf8e6aEyVrUsAm1EL39GDiDz-KXJIZqBtipf6KQ798";
+  public List<FipeBrandResponse> getBrands(Category category) {
 
-    var headers = new HttpHeaders();
-    headers.setBearerAuth(token);
+    String url = baseUrl + getCategoryResource(category);
 
-    var entity = new HttpEntity<>(headers);
-
-    // TODO implement treatment for duplicates.
-
-    ResponseEntity<FipeBrandResponse[]> response = restTemplate.exchange(
+    return restTemplate.exchange(
         url,
         HttpMethod.GET,
-        entity,
-        FipeBrandResponse[].class);
+        null,
+        new ParameterizedTypeReference<List<FipeBrandResponse>>() {}
+    ).getBody();
+  }
 
-    return Arrays.asList(response.getBody());
-
+  private static String getCategoryResource(Category category) {
+    return switch (category) {
+      case CAR -> "/carros/marcas/";
+      case MOTORCYCLE -> "/motos/marcas/";
+      case TRUCK -> "/caminhoes/marcas/";
+    };
   }
 
 }
