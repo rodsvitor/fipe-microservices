@@ -13,8 +13,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/vehicles")
 public class VehicleController {
+@RequestMapping("/v1/vehicles")
 public class VehicleController implements VehicleControllerDocs {
 
   private final VehicleClient vehicleClient;
