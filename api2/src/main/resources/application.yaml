@@ -21,6 +21,10 @@ spring:
 server:
   port: ${SERVER_PORT:8081}
 
+internal:
+  api:
+    key: ${INTERNAL_API_KEY:b7f9c2a4-91d3-4f1a-8c7e-2d9a6b5c8e11}
+
 fipe-api:
   base-url: https://parallelum.com.br/fipe/api/v1
   ## Key to perform up to 1000 operations per day at FIPE API
