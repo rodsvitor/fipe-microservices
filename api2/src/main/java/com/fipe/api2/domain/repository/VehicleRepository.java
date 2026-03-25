@@ -1,5 +1,6 @@
 package com.fipe.api2.domain.repository;
 
+import com.fipe.api2.domain.model.Category;
 import com.fipe.api2.domain.model.Vehicle;
 
 import java.util.List;
