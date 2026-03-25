@@ -15,14 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
 
   private final JwtService jwtService;
 
   @PostMapping("/login")
   public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
 
-    // simples (hardcoded pro teste)
+    // simple (hardcoded for test)
+    // TODO Use bcrypt later
     if (!"admin".equals(request.username()) ||
         !"admin".equals(request.password())) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -2,7 +2,8 @@ package com.fipe.api1.entrypoint.controller;
 
 import com.fipe.api1.infrastructure.client.UpdateVehicleRequest;
 import com.fipe.api1.infrastructure.client.VehicleClient;
-import com.fipe.api1.infrastructure.client.VehicleResponse;
+import com.fipe.api1.infrastructure.client.dto.UpdateVehicleRequest;
+import com.fipe.api1.infrastructure.client.dto.VehicleResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/vehicles")
 public class VehicleController {
+public class VehicleController implements VehicleControllerDocs {
 
   private final VehicleClient vehicleClient;
 
