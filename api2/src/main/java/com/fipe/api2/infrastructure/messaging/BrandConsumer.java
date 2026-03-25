@@ -18,11 +18,12 @@ public class BrandConsumer {
 
     // TODO Implement retry and DLQ later.
 
-    log.info("Processing brand: {} - {}", message.id(), message.name());
+    log.info("Processing brand: {} - {}", message.brandId(), message.brandName());
 
     useCase.execute(
-        message.id(),
-        message.name());
+        message.brandId(),
+        message.brandName(),
+        message.brandCategory());
   }
 
 }

@@ -1,6 +1,7 @@
 package com.fipe.api2.infrastructure.persistence;
 
 
+import com.fipe.api2.domain.model.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,9 @@ import lombok.NoArgsConstructor;
 @Table(
     name = "vehicles",
     uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"fipe_brand_id", "fipe_model_id"})
+        @UniqueConstraint(
+            name = "uk_vehicle_fipe_unique",
+            columnNames = {"fipe_brand_id", "fipe_model_id", "category"})
     }
 )
 public class VehicleEntity {
@@ -33,5 +36,9 @@ public class VehicleEntity {
   private String model;
 
   private String observations;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private Category category;
 
 }

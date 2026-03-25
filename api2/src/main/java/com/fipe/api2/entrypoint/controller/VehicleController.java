@@ -4,6 +4,7 @@ import com.fipe.api2.application.dto.UpdateVehicleRequest;
 import com.fipe.api2.application.dto.VehicleResponse;
 import com.fipe.api2.application.service.VehicleQueryService;
 import com.fipe.api2.application.usecase.UpdateVehicleUseCase;
+import com.fipe.api2.domain.model.Category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,15 @@ public class VehicleController {
   }
 
   @GetMapping("/brands")
-  public ResponseEntity<List<String>> getBrands() {
-    return ResponseEntity.ok(vehicleQueryService.findAllBrands());
+  public ResponseEntity<List<String>> getBrands(@RequestParam(required = false) Category category) {
+    return ResponseEntity.ok(vehicleQueryService.findAllBrands(category));
   }
 
   @GetMapping
-  public ResponseEntity<List<VehicleResponse>> getByBrand(@RequestParam String brand) {
-    return ResponseEntity.ok(vehicleQueryService.findByBrand(brand));
+  public ResponseEntity<List<VehicleResponse>> getByBrand( // TODO IMPLEMENTS PAGEABLE LATER
+      @RequestParam String brand,
+      @RequestParam(required = false) Category category) {
+    return ResponseEntity.ok(vehicleQueryService.findByBrand(brand, category));
   }
 
   @PutMapping("/{id}")

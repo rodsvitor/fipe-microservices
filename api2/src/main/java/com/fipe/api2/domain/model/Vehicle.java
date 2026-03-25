@@ -15,10 +15,10 @@ public class Vehicle {
 
   private String brand;
 
-  private String code;
-
   private String model;
 
   private String observations;
+
+  private Category category;
 
 }
