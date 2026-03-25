@@ -25,14 +25,16 @@ public class VehicleEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(nullable = false)
   private Long fipeBrandId;
 
+  @Column(nullable = false)
   private Long fipeModelId;
 
+  @Column(nullable = false)
   private String brand;
 
-  private String code;
-
+  @Column(nullable = false)
   private String model;
 
   private String observations;
