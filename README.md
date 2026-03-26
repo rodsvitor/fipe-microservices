@@ -25,7 +25,7 @@ The architecture is based on **microservices**, using asynchronous processing wi
 
 ```bash
 # Run everything
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 ### Services
