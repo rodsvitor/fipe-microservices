@@ -8,6 +8,54 @@ The architecture is based on **microservices**, using asynchronous processing wi
 
 ---
 
+## ⚙️ Technologies
+
+* Java + Spring Boot
+* PostgreSQL
+* RabbitMQ
+* Redis
+* Docker / Docker Compose
+* JWT Authentication
+
+---
+
+## 🚀 Running the Project
+
+### 1. Start infrastructure
+
+```bash
+# Run everything
+docker-compose up --build -d
+```
+
+### Services
+
+| Service     | URL / Port                                       |
+| ----------- | ------------------------------------------------ |
+| PostgreSQL  | localhost:5432                                   |
+| RabbitMQ    | localhost:5672                                   |
+| RabbitMQ UI | [http://localhost:15672](http://localhost:15672) |
+| Redis       | localhost:6379                                   |
+
+### 2. Run applications
+
+Run both services:
+
+* API-1 → port 8080
+* API-2 → port 8081
+
+---
+
+## 📖 Swagger / API Documentation
+
+All API endpoints are documented and available via **Swagger UI**:
+
+[http://localhost:8080/swagger-ui/index.html#/](http://localhost:8080/swagger-ui/index.html#/)
+
+You can explore available endpoints, see request/response schemas, and test the API directly from the browser.
+
+---
+
 ## 🧱 Architecture
 
 ```
@@ -39,46 +87,6 @@ API-1 → RabbitMQ → API-2
 * Integrates with FIPE API
 * Persists data in PostgreSQL
 * Exposes internal REST endpoints
-
----
-
-## ⚙️ Technologies
-
-* Java + Spring Boot
-* PostgreSQL
-* RabbitMQ
-* Redis
-* Docker / Docker Compose
-* JWT Authentication
-
----
-
-## 🚀 Running the Project
-
-### 1. Start infrastructure
-
-```bash
-# Run everything
-docker-compose up --build -d
-```
-
-### Services:
-
-| Service     | URL / Port             |
-| ----------- | ---------------------- |
-| PostgreSQL  | localhost:5432         |
-| RabbitMQ    | localhost:5672         |
-| RabbitMQ UI | http://localhost:15672 |
-| Redis       | localhost:6379         |
-
----
-
-### 2. Run applications
-
-Run both services:
-
-* API-1 → port 8080
-* API-2 → port 8081
 
 ---
 
@@ -137,15 +145,11 @@ Authorization: Bearer <JWT_TOKEN>
 GET /vehicles/brands
 ```
 
----
-
 ### 🔹 Get Vehicles by Brand
 
 ```bash
 GET /vehicles?brand=Fiat
 ```
-
----
 
 ### 🔹 Update Vehicle
 
@@ -214,5 +218,3 @@ PUT /vehicles/{id}
 ## 👨‍💻 Author
 
 Rodrigo Souza
-
----
