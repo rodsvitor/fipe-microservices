@@ -135,6 +135,8 @@ POST /auth/login
 Authorization: Bearer <JWT_TOKEN>
 ```
 
+> **Note:** The username and password `admin/admin` are set **purposely for testing** and should not be used in production.
+
 ---
 
 ## 📡 API Endpoints (API-1)
